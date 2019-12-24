@@ -18,5 +18,7 @@ object SolutionsToTheArithmeticProblems {
       case (a, b) if a > b            => b.gcd(a - b)
       case (a, b) if a < b            => a.gcd(b - a)
     }
+
+    def isCoprimeTo(b: Int): Boolean = gcd(b) == 1
   }
 }

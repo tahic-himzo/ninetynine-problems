@@ -114,8 +114,25 @@ object SolutionsToTheArithmeticProblems {
         val goldbachs = range.foldLeft(List.empty[String]) {
           case (goldbachStrings, a) =>
             val (primeA, primeB) = a.goldbach
-            val goldbachString   = s"\na = $primeA + $primeB"
+            val goldbachString   = s"$a = $primeA + $primeB"
             goldbachString :: goldbachStrings
+        }
+        println(goldbachs.mkString("\n"))
+    }
+
+    def printGoldbachListLimited(end: Int, minimumPrimeSize: Int): Unit = end match {
+      case x if x <= value            => throw new IllegalArgumentException("Please specify a range where the end is bigger than the start.")
+      case _ if value <= 2            => throw new IllegalArgumentException("Please specify a start that is bigger than 2.")
+      case _ if minimumPrimeSize <= 0 => throw new IllegalArgumentException("Please specify a non-negative minimumPrimeSize.")
+      case _ =>
+        val range = Range.inclusive(value, end).filter(_ % 2 == 0)
+        val goldbachs = range.foldLeft(List.empty[String]) {
+          case (goldbachStrings, a) =>
+            val (primeA, primeB) = a.goldbach
+            val goldbachString   = s"$a = $primeA + $primeB"
+
+            if(primeA > minimumPrimeSize && primeB > minimumPrimeSize) goldbachString :: goldbachStrings
+            else goldbachStrings
         }
         println(goldbachs.mkString("\n"))
     }

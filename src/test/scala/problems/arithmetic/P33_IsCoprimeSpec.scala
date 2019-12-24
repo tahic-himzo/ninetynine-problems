@@ -6,8 +6,8 @@ import problems.arithmetic.SolutionsToTheArithmeticProblems._
 
 import scala.util.{Failure, Try}
 
-class P32_IsCoprimeSpec extends WordSpec with Matchers {
-  "P32_IsCoprime" should {
+class P33_IsCoprimeSpec extends WordSpec with Matchers {
+  "P33_IsCoprime" should {
     "find out if two integers are coprime" in {
       forAll(
         Table(

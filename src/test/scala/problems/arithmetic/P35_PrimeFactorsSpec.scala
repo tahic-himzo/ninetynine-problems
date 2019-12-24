@@ -6,8 +6,8 @@ import problems.arithmetic.SolutionsToTheArithmeticProblems._
 
 import scala.util.{Failure, Try}
 
-class P34_PrimeFactorsSpec extends WordSpec with Matchers {
-  "P34_PrimeFactors" should {
+class P35_PrimeFactorsSpec extends WordSpec with Matchers {
+  "P35_PrimeFactors" should {
     "get the number of prime factors of a positive integer" in {
       forAll(
         Table(

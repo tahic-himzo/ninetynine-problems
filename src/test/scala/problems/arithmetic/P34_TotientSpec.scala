@@ -6,8 +6,8 @@ import problems.arithmetic.SolutionsToTheArithmeticProblems._
 
 import scala.util.{Failure, Try}
 
-class P33_TotientSpec extends WordSpec with Matchers {
-  "P33_IsTotient" should {
+class P34_TotientSpec extends WordSpec with Matchers {
+  "P34_Totient" should {
     "get the number of all coprimes between 1 and a given value" in {
       forAll(
         Table(

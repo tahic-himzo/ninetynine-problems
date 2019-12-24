@@ -85,7 +85,11 @@ object SolutionsToTheArithmeticProblems {
       s"Totient (regular): ${durationRegular.toMillis}ms" + " / " + s"Totient (improved): ${durationImproved.toMillis}ms"
     }
 
-    def listPrimesinRange: List[Int] = List.range(2, value).filter(_.isPrime)
+    def listPrimesinRange(end: Int): List[Int] = end match {
+      case x if x <= 1 || value <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
+      case x if x < value            => throw new IllegalArgumentException("Please provide an end that is bigger than the beginning.")
+      case _                         => Range.inclusive(value, end).filter(_.isPrime).toList
+    }
 
     private def timed[A](f: => A): (A, FiniteDuration) = {
       val start    = System.nanoTime()

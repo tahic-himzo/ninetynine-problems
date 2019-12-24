@@ -1,7 +1,5 @@
 package problems.arithmetic
 
-import java.util.logging.Logger
-
 import scala.annotation.tailrec
 import scala.collection.immutable.LazyList.#::
 import scala.concurrent.duration.{DurationDouble, FiniteDuration}
@@ -89,6 +87,20 @@ object SolutionsToTheArithmeticProblems {
       case x if x <= 1 || value <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
       case x if x < value            => throw new IllegalArgumentException("Please provide an end that is bigger than the beginning.")
       case _                         => Range.inclusive(value, end).filter(_.isPrime).toList
+    }
+
+    def goldbach: (Int, Int) = value match {
+      case v if v <= 2 => throw new IllegalArgumentException("Please provide positive integers > 2 only")
+      case v if v % 2 != 0 => throw new IllegalArgumentException("Please provide even integers only")
+      case _ =>
+        val primes        = 2.listPrimesinRange(value)
+        val primesReverse = primes.reverse
+        primes
+          .flatMap(p => {
+            val counterPart = primesReverse.takeWhile(_ + p <= value).find(_ + p == value)
+            counterPart.map((p, _))
+          })
+          .head
     }
 
     private def timed[A](f: => A): (A, FiniteDuration) = {

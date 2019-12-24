@@ -1,6 +1,7 @@
 package problems.arithmetic
 
 import scala.annotation.tailrec
+import scala.collection.immutable.LazyList.#::
 
 object SolutionsToTheArithmeticProblems {
   implicit class Solutions(value: Int) {
@@ -32,6 +33,20 @@ object SolutionsToTheArithmeticProblems {
           case (totientSoFar, x) if isCoprimeTo(x) => totientSoFar + 1
           case (totientSoFar, _)                   => totientSoFar
         }
+    }
+
+    final def primeFactors: List[Int] = {
+      @tailrec
+      def go(leftOverValue: Int, primesSoFar: List[Int], primesLeft: LazyList[Int]): List[Int] = primesLeft match {
+        case x #:: _ if leftOverValue % x == 0 => go(leftOverValue / x, x :: primesSoFar, primesLeft)
+        case _ #:: xs => go(leftOverValue, primesSoFar, xs)
+        case _        => primesSoFar
+      }
+
+      value match {
+        case x if x <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
+        case _           => go(value, List.empty[Int], LazyList.range(2, value).filter(_.isPrime)).reverse
+      }
     }
   }
 }

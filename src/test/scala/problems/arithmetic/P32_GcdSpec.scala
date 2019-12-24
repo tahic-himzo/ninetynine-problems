@@ -17,7 +17,8 @@ class P32_GcdSpec extends WordSpec with Matchers {
           (13, 17, 1),
           (36, 63, 9),
           (2, 2, 2),
-          (1, 2, 1)
+          (1, 2, 1),
+          (39200, 17150, 2450)
         )
       ) {
         case (a, b, expectedGCD) => a.gcd(b) shouldEqual expectedGCD
@@ -25,6 +26,7 @@ class P32_GcdSpec extends WordSpec with Matchers {
     }
 
     "throw an error if one of the inputs is not positive" in {
+      Try(-2.gcd(5)) shouldBe a[Failure[_]]
       Try(0.gcd(5)) shouldBe a[Failure[_]]
       Try(0.gcd(0)) shouldBe a[Failure[_]]
       Try(5.gcd(0)) shouldBe a[Failure[_]]

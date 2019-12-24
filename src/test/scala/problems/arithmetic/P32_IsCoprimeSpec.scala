@@ -18,7 +18,8 @@ class P32_IsCoprimeSpec extends WordSpec with Matchers {
           (36, 63, false),
           (2, 2, false),
           (1, 2, true),
-          (35, 64, true)
+          (35, 64, true),
+          (123456, 41088, false)
         )
       ) {
         case (a, b, isCoprime) => a.isCoprimeTo(b) shouldEqual isCoprime
@@ -26,9 +27,10 @@ class P32_IsCoprimeSpec extends WordSpec with Matchers {
     }
 
     "throw an error if one of the inputs is not positive" in {
-      Try(0.gcd(5)) shouldBe a[Failure[_]]
-      Try(0.gcd(0)) shouldBe a[Failure[_]]
-      Try(5.gcd(0)) shouldBe a[Failure[_]]
+      Try((-2).isCoprimeTo(5)) shouldBe a[Failure[_]]
+      Try(0.isCoprimeTo(5)) shouldBe a[Failure[_]]
+      Try(0.isCoprimeTo(0)) shouldBe a[Failure[_]]
+      Try(5.isCoprimeTo(0)) shouldBe a[Failure[_]]
     }
   }
 }

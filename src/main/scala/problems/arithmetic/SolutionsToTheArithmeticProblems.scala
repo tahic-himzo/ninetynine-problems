@@ -65,5 +65,14 @@ object SolutionsToTheArithmeticProblems {
         case _           => go(value, Map.empty[Int, Int], LazyList.range(2, value).filter(_.isPrime))
       }
     }
+
+    final def totientImproved: Int = value match {
+      case v if v <= 0 => throw new IllegalArgumentException("Please provide positive integers only")
+      case v if v == 1 => 1
+      case _ =>
+        primeFactorsMultiplicity.foldLeft(1) {
+          case (phiSoFar, (p, m)) => phiSoFar * (p - 1) * Math.pow(p, m - 1).toInt
+        }
+    }
   }
 }

@@ -5,7 +5,7 @@ import org.scalatest.prop.TableDrivenPropertyChecks._
 import problems.arithmetic.SolutionsToTheArithmeticProblems._
 
 class P31_IsPrimeSpec extends WordSpec with Matchers {
-  "P01_IsPrime" should {
+  "P31_IsPrime" should {
     "check if an integer is prime" in {
       forAll(
         Table(

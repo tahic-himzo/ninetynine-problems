@@ -96,11 +96,28 @@ object SolutionsToTheArithmeticProblems {
         val primes        = 2.listPrimesinRange(value)
         val primesReverse = primes.reverse
         primes
-          .flatMap(p => {
-            val counterPart = primesReverse.takeWhile(_ + p <= value).find(_ + p == value)
-            counterPart.map((p, _))
-          })
+          .flatMap(
+            p =>
+              primesReverse.dropWhile(_ + p > value).headOption match {
+                case Some(counterPart) if counterPart + p == value => Some((p, counterPart))
+                case _                                             => None
+            }
+          )
           .head
+    }
+
+    def printGoldbachList(end: Int): Unit = end match {
+      case x if x <= value => throw new IllegalArgumentException("Please specify a range where the end is bigger than the start.")
+      case _ if value <= 2 => throw new IllegalArgumentException("Please specify a start that is bigger than 2.")
+      case _ =>
+        val range = Range.inclusive(value, end).filter(_ % 2 == 0)
+        val goldbachs = range.foldLeft(List.empty[String]) {
+          case (goldbachStrings, a) =>
+            val (primeA, primeB) = a.goldbach
+            val goldbachString   = s"\na = $primeA + $primeB"
+            goldbachString :: goldbachStrings
+        }
+        println(goldbachs.mkString("\n"))
     }
 
     private def timed[A](f: => A): (A, FiniteDuration) = {

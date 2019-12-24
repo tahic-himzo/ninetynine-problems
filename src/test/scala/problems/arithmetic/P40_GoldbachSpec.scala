@@ -12,7 +12,8 @@ class P40_GoldbachSpec extends WordSpec with Matchers {
       forAll(
         Table(
           ("number", "goldbachs"),
-          (28, (5, 23))
+          (28, (5, 23)),
+          (4, (2, 2))
         )
       ) {
         case (number, expectedGoldbach) => number.goldbach shouldEqual expectedGoldbach

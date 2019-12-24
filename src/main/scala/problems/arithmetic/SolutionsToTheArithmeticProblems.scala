@@ -1,7 +1,10 @@
 package problems.arithmetic
 
+import java.util.logging.Logger
+
 import scala.annotation.tailrec
 import scala.collection.immutable.LazyList.#::
+import scala.concurrent.duration.{DurationDouble, FiniteDuration}
 
 object SolutionsToTheArithmeticProblems {
   implicit class Solutions(value: Int) {
@@ -52,17 +55,17 @@ object SolutionsToTheArithmeticProblems {
 
     final def primeFactorsMultiplicity: Map[Int, Int] = {
       @tailrec
-      def go(leftOverValue: Int, primesSoFar: Map[Int, Int], primesLeft: LazyList[Int]): Map[Int, Int] = primesLeft match {
-        case x #:: _ if leftOverValue % x == 0 =>
-          go(leftOverValue / x, primesSoFar.updatedWith(x)(maybeValue => Some(maybeValue.fold(1)(_ + 1))), primesLeft)
-        case _ #:: xs => go(leftOverValue, primesSoFar, xs)
-        case _        => primesSoFar
+      def go(leftOverValue: Int, primesSoFar: Map[Int, Int], nextValue: Int): Map[Int, Int] = nextValue match {
+        case x if x > value => primesSoFar
+        case x if leftOverValue % x == 0 && x.isPrime =>
+          go(leftOverValue / x, primesSoFar.updatedWith(x)(maybeValue => Some(maybeValue.fold(1)(_ + 1))), x)
+        case x => go(leftOverValue, primesSoFar, x + 1)
       }
 
       value match {
         case x if x <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
         case x if x == 2 => Map(2 -> 1)
-        case _           => go(value, Map.empty[Int, Int], LazyList.range(2, value).filter(_.isPrime))
+        case _           => go(value, Map.empty[Int, Int], 2)
       }
     }
 
@@ -73,6 +76,23 @@ object SolutionsToTheArithmeticProblems {
         primeFactorsMultiplicity.foldLeft(1) {
           case (phiSoFar, (p, m)) => phiSoFar * (p - 1) * Math.pow(p, m - 1).toInt
         }
+    }
+
+    final def compareTotients: String = {
+      val (_, durationRegular)  = timed(value.totient)
+      val (_, durationImproved) = timed(value.totientImproved)
+
+      s"Totient (regular): ${durationRegular.toMillis}ms" + " / " + s"Totient (improved): ${durationImproved.toMillis}ms"
+    }
+
+    def listPrimesinRange: List[Int] = List.range(2, value).filter(_.isPrime)
+
+    private def timed[A](f: => A): (A, FiniteDuration) = {
+      val start    = System.nanoTime()
+      val a        = f
+      val end      = System.nanoTime()
+      val duration = (end - start).nanoseconds
+      (a, duration)
     }
   }
 }

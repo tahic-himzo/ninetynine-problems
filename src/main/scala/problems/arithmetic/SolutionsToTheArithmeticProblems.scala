@@ -45,7 +45,24 @@ object SolutionsToTheArithmeticProblems {
 
       value match {
         case x if x <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
+        case x if x == 2 => List(2)
         case _           => go(value, List.empty[Int], LazyList.range(2, value).filter(_.isPrime)).reverse
+      }
+    }
+
+    final def primeFactorsMultiplicity: Map[Int, Int] = {
+      @tailrec
+      def go(leftOverValue: Int, primesSoFar: Map[Int, Int], primesLeft: LazyList[Int]): Map[Int, Int] = primesLeft match {
+        case x #:: _ if leftOverValue % x == 0 =>
+          go(leftOverValue / x, primesSoFar.updatedWith(x)(maybeValue => Some(maybeValue.fold(1)(_ + 1))), primesLeft)
+        case _ #:: xs => go(leftOverValue, primesSoFar, xs)
+        case _        => primesSoFar
+      }
+
+      value match {
+        case x if x <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
+        case x if x == 2 => Map(2 -> 1)
+        case _           => go(value, Map.empty[Int, Int], LazyList.range(2, value).filter(_.isPrime))
       }
     }
   }

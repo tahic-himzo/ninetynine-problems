@@ -4,8 +4,8 @@ import scala.annotation.tailrec
 import scala.collection.immutable.LazyList.#::
 import scala.concurrent.duration.{DurationDouble, FiniteDuration}
 
-object SolutionsToTheArithmeticProblems {
-  implicit class Solutions(value: Int) {
+object ArithmeticProblems {
+  implicit class S99Int(value: Int) {
 
     // Determine whether a given integer number is prime.
     final def isPrime: Boolean = value match {
@@ -24,8 +24,10 @@ object SolutionsToTheArithmeticProblems {
       case (a, b) if a < b            => a.gcd(b - a)
     }
 
+    // Determine whether two positive integer numbers are coprime.
     final def isCoprimeTo(b: Int): Boolean = gcd(b) == 1
 
+    // Calculate Euler's totient function
     final def totient: Int = value match {
       case v if v <= 0 => throw new IllegalArgumentException("Please provide positive integers only")
       case v if v == 1 => 1
@@ -36,6 +38,7 @@ object SolutionsToTheArithmeticProblems {
         }
     }
 
+    // Determine the prime factors of a given positive integer.
     final def primeFactors: List[Int] = {
       @tailrec
       def go(leftOverValue: Int, primesSoFar: List[Int], primesLeft: LazyList[Int]): List[Int] = primesLeft match {
@@ -51,6 +54,7 @@ object SolutionsToTheArithmeticProblems {
       }
     }
 
+    // Determine the prime factors and their multiplicity of a given positive integer.
     final def primeFactorsMultiplicity: Map[Int, Int] = {
       @tailrec
       def go(leftOverValue: Int, primesSoFar: Map[Int, Int], nextValue: Int): Map[Int, Int] = nextValue match {
@@ -67,6 +71,7 @@ object SolutionsToTheArithmeticProblems {
       }
     }
 
+    // Calculate Euler's totient function by using the prime factors.
     final def totientImproved: Int = value match {
       case v if v <= 0 => throw new IllegalArgumentException("Please provide positive integers only")
       case v if v == 1 => 1
@@ -76,6 +81,7 @@ object SolutionsToTheArithmeticProblems {
         }
     }
 
+    // Use the solutions of problems P34 and P37 to compare the algorithms. Try to calculate phi(10090) as an example.
     final def compareTotients: String = {
       val (_, durationRegular)  = timed(value.totient)
       val (_, durationImproved) = timed(value.totientImproved)
@@ -83,12 +89,15 @@ object SolutionsToTheArithmeticProblems {
       s"Totient (regular): ${durationRegular.toMillis}ms" + " / " + s"Totient (improved): ${durationImproved.toMillis}ms"
     }
 
+    // Given a range of integers by its lower and upper limit, construct a list of all prime numbers in that range.
     def listPrimesinRange(end: Int): List[Int] = end match {
       case x if x <= 1 || value <= 1 => throw new IllegalArgumentException("Please provide positive integers > 1 only")
       case x if x < value            => throw new IllegalArgumentException("Please provide an end that is bigger than the beginning.")
       case _                         => Range.inclusive(value, end).filter(_.isPrime).toList
     }
 
+    // Goldbach's conjecture says that every positive even number greater than 2 is the sum of two prime numbers.
+    // Write a function to find the two prime numbers that sum up to a given even integer.
     def goldbach: (Int, Int) = value match {
       case v if v <= 2 => throw new IllegalArgumentException("Please provide positive integers > 2 only")
       case v if v % 2 != 0 => throw new IllegalArgumentException("Please provide even integers only")
@@ -106,6 +115,7 @@ object SolutionsToTheArithmeticProblems {
           .head
     }
 
+    //Given a range of integers by its lower and upper limit, print a list of all even numbers and their Goldbach composition.
     def printGoldbachList(end: Int): Unit = end match {
       case x if x <= value => throw new IllegalArgumentException("Please specify a range where the end is bigger than the start.")
       case _ if value <= 2 => throw new IllegalArgumentException("Please specify a start that is bigger than 2.")
@@ -120,6 +130,9 @@ object SolutionsToTheArithmeticProblems {
         println(goldbachs.mkString("\n"))
     }
 
+    // In most cases, if an even number is written as the sum of two prime numbers, one of them is very small.
+    // Very rarely, the primes are both bigger than, say, 50.
+    // Try to find out how many such cases there are in a range.
     def printGoldbachListLimited(end: Int, minimumPrimeSize: Int): Unit = end match {
       case x if x <= value            => throw new IllegalArgumentException("Please specify a range where the end is bigger than the start.")
       case _ if value <= 2            => throw new IllegalArgumentException("Please specify a start that is bigger than 2.")

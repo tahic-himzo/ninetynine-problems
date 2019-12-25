@@ -1,7 +1,7 @@
 package problems.arithmetic
 
 import org.scalatest._
-import problems.arithmetic.SolutionsToTheArithmeticProblems._
+import problems.arithmetic.ArithmeticProblems._
 
 import scala.util.{Failure, Try}
 

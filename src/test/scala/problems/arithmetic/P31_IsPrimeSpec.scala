@@ -2,7 +2,7 @@ package problems.arithmetic
 
 import org.scalatest._
 import org.scalatest.prop.TableDrivenPropertyChecks._
-import problems.arithmetic.SolutionsToTheArithmeticProblems._
+import problems.arithmetic.ArithmeticProblems._
 
 class P31_IsPrimeSpec extends WordSpec with Matchers {
   "P31_IsPrime" should {
